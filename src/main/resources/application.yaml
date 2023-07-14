@@ -1,1 +1,42 @@
+spring:
+  profiles:
+    active: dev
+  cloud:
+    gateway:
+      routes:
+        - id: dummy
+          uri: forward:/dummy
+          predicates:
+            - Path=/dummytest/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: circuit-breaker
+                fallbackUri: forward:/fallback/timeout
+        - id: fallback
+          uri: http://localhost:8080
+          predicates:
+            - Path=/fallback/**
+          filters:
+            - name: FallbackHeaders
+              args:
+                executionExceptionTypeHeaderName: Fallback-Exception-Type
+                executionExceptionMessageHeaderName: Fallback-Exception-Message
+            - RewritePath=/fallback/timeout , /in/fallback/timeout
 
+resilience4j:
+  circuit-breaker:
+    configs:
+      default:
+        minimumNumberOfCalls: 10
+        failureRateThreshold: 1
+        waitDurationInOpenState: 10s
+        slowCallRateThreshold: 10
+        slowCallDurationThreshold: 5s
+        permittedNumberOfCallsInHalfOpenState: 5
+  rate-limiter:
+    configs:
+      default:
+        limitForPeriod: 3
+        limitRefreshPeriod: 10s
+        timeoutDuration: 1s
