@@ -1,0 +1,46 @@
+spring:
+  profiles:
+    active: dev
+  cloud:
+    gateway:
+      routes:
+        - id: dummy
+          uri: http://localhost:8080
+          predicates:
+            - Path=/dummyService/**
+          filters:
+            - RewritePath=/dummyService/(?<segment>.*), /dummy/$\{segment}
+            - name: CircuitBreaker
+              args:
+                name: dummy-circuit-breaker
+                fallbackUri: forward:/fallbackService
+        - id: fallback
+          uri: http://localhost:8081
+          predicates:
+              - Path=/fallbackService
+          filters:
+              - RewritePath=/fallbackService, /fallback
+              - name: FallbackHeaders
+                args:
+                  executionExceptionTypeHeaderName: Fallback-Exception-Type
+                  executionExceptionMessageHeaderName: Fallback-Exception-Message
+
+resilience4j:
+  circuit-breaker:
+    configs:
+      default:
+        minimumNumberOfCalls: 1
+        failureRateThreshold: 1
+        waitDurationInOpenState: 10s
+        slowCallRateThreshold: 10
+        slowCallDurationThreshold: 5s
+        permittedNumberOfCallsInHalfOpenState: 1
+  rate-limiter:
+    configs:
+      default:
+        limitForPeriod: 3
+        limitRefreshPeriod: 10s
+        timeoutDuration: 1s
+
+server:
+  port: 8080
