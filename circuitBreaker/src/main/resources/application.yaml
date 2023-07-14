@@ -14,6 +14,7 @@ spring:
               args:
                 name: dummy-circuit-breaker
                 fallbackUri: forward:/fallbackService
+
         - id: fallback
           uri: http://localhost:8081
           predicates:
@@ -22,8 +23,10 @@ spring:
               - RewritePath=/fallbackService, /fallback
               - name: FallbackHeaders
                 args:
-                  executionExceptionTypeHeaderName: Fallback-Exception-Type
-                  executionExceptionMessageHeaderName: Fallback-Exception-Message
+                  name: fallback
+                  headerName: X-Fallback-Service
+                  headerValue: true
+
 
 resilience4j:
   circuit-breaker:
@@ -35,12 +38,7 @@ resilience4j:
         slowCallRateThreshold: 10
         slowCallDurationThreshold: 5s
         permittedNumberOfCallsInHalfOpenState: 1
-  rate-limiter:
-    configs:
-      default:
-        limitForPeriod: 3
-        limitRefreshPeriod: 10s
-        timeoutDuration: 1s
+
 
 server:
   port: 8080
