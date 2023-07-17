@@ -17,8 +17,6 @@ class FallbackController {
     fun fallback(
         @RequestHeader headers: Map<String?, String?>,
     ) {
-        logger.info("Fallback income")
-        logger.info("Headers: $headers")
         toFallbackInfo(headers)
             .also { logger.info(it.toString()) }
     }
