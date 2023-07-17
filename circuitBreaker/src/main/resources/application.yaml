@@ -12,20 +12,17 @@ spring:
             - RewritePath=/dummyService/(?<segment>.*), /dummy/$\{segment}
             - name: CircuitBreaker
               args:
-                name: dummy-circuit-breaker
-                fallbackUri: forward:/fallbackService
+                name: circuit-breaker
+                fallbackUri: forward:/fallback
 
         - id: fallback
           uri: http://localhost:8081
           predicates:
-              - Path=/fallbackService
+              - Path=/fallback
           filters:
-              - RewritePath=/fallbackService, /fallback
-              - name: FallbackHeaders
-                args:
-                  name: fallback
-                  headerName: X-Fallback-Service
-                  headerValue: true
+            - name: FallbackHeaders
+            - AddRequestHeader=X-Request-Server,core
+
 
 
 resilience4j:
