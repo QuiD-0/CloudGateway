@@ -14,10 +14,4 @@ class DummyController {
         Thread.sleep(10000)
         println("DummyController: timeout done")
     }
-
-    @GetMapping("/error")
-    fun error() {
-        println("DummyController: error")
-        throw RuntimeException("DummyController: error")
-    }
 }
