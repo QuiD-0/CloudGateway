@@ -7,7 +7,7 @@ spring:
     gateway:
       routes:
         - id: dummy
-          uri: http://localhost:8080
+          uri: lb://GATEWAY
           predicates:
             - Path=/dummyService/**
           filters:
@@ -18,7 +18,7 @@ spring:
                 fallbackUri: forward:/fallback
 
         - id: fallback
-          uri: http://localhost:8081
+          uri: lb://FALLBACK
           predicates:
               - Path=/fallback
           filters:
@@ -27,12 +27,15 @@ spring:
 
 eureka:
   instance:
-    instance-id: GATEWAY
+    instance-id: gateway
+    hostname: gateway
+    ip-address: 127.0.0.1
+    prefer-ip-address: true
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://127.0.0.1:8761/eureka
+      defaultZone: http://127.0.0.1:8761/eureka/
 
 resilience4j:
   circuit-breaker:

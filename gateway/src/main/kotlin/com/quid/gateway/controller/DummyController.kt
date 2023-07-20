@@ -11,7 +11,7 @@ class DummyController {
     @GetMapping("/timeout")
     fun dummy() {
         println("DummyController: timeout")
-        Thread.sleep(10000)
+        Thread.sleep(5000)
         println("DummyController: timeout done")
     }
 }

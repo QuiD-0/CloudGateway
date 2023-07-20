@@ -11,11 +11,9 @@ eureka:
   server:
     enable-self-preservation: true
   instance:
-    registry:
-      default-open-for-traffic-count: 0
-    instance-id: DISCOVERY
-    hostname: DISCOVERY
-    ip-address: localhost
+    instance-id: discovery
+    hostname: discovery
+    ip-address: 127.0.0.1
     prefer-ip-address: true
 
   client:
