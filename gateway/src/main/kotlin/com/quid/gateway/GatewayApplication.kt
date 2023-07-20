@@ -1,11 +1,11 @@
-package com.quid.circuitBreaker
+package com.quid.gateway
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class CircuitBreakerApplication
+class GatewayApplication
 
 fun main(args: Array<String>) {
-	runApplication<CircuitBreakerApplication>(*args)
+	runApplication<GatewayApplication>(*args)
 }
