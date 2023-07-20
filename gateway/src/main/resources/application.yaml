@@ -54,19 +54,12 @@ server:
 
 management:
   endpoints:
-    jmx:
-      exposure:
-        include: refresh, health, beans
     web:
       exposure:
         include: "*"
   health:
     circuit-breakers:
       enabled: true
-  metrics:
-    export:
-      prometheus:
-        enabled: true
   endpoint:
     health:
       show-details: always

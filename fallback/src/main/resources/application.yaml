@@ -21,16 +21,9 @@ eureka:
 
 management:
   endpoints:
-    jmx:
-      exposure:
-        include: refresh, health, beans
     web:
       exposure:
         include: "*"
-  metrics:
-    export:
-      prometheus:
-        enabled: true
   endpoint:
     health:
       show-details: always
