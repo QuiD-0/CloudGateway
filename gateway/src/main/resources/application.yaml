@@ -20,13 +20,6 @@ spring:
                   - FallbackHeaders
                   - AddRequestHeader=X-Request-Server, service-a-api
 
-        - id: fallback
-          uri: lb://FALLBACK
-          predicates:
-              - Path=/fallback
-          filters:
-            - name: FallbackHeaders
-            - AddRequestHeader=X-Request-Server,core
 
 eureka:
   instance:
