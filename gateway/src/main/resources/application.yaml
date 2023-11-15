@@ -6,16 +6,19 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: dummy
-          uri: lb://GATEWAY
+        - id: service-a
+          uri: lb://SERVICE-A
           predicates:
-            - Path=/dummyService/**
+            - Path=/a/**
           filters:
-            - RewritePath=/dummyService/(?<segment>.*), /dummy/$\{segment}
+            - RewritePath= /a/(?<segment>.*), /$\{segment}
             - name: CircuitBreaker
               args:
                 name: circuit-breaker
                 fallbackUri: forward:/fallback
+                filter:
+                  - FallbackHeaders
+                  - AddRequestHeader=X-Request-Server, service-a-api
 
         - id: fallback
           uri: lb://FALLBACK
