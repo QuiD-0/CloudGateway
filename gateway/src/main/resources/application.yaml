@@ -19,6 +19,11 @@ spring:
                 filter:
                   - FallbackHeaders
                   - AddRequestHeader=X-Request-Server, service-a-api
+            - name: LoggingFilter
+              args:
+                  message: service-a
+                  preLogger: true
+                  postLogger: true
 
 
 eureka:
